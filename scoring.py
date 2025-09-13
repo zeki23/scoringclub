@@ -19,7 +19,7 @@ st.caption("Entrez des tickers (ex: MSFT, AAPL, RI.PA) ou importez un CSV avec u
 with st.sidebar:
     st.header("Paramètres Scoring")
     sleep_sec = st.number_input("Pause (sec) entre tickers", min_value=0.0, max_value=10.0, value=0.0, step=0.5)
-    debug = st.toggle("Mode DEBUG", value=False)
+    
 
 # =============================
 # Fonctions utilitaires
