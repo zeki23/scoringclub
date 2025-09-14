@@ -5,7 +5,7 @@ import streamlit as st
 st.set_page_config(page_title="Scoring & Backtest", layout="wide")
 
 # ---- Header: Titre + logo à droite ----
-LOGO_PATH = Path(__file__).parent / "logo.png"   # mets ton logo ici, ex: "static/logo.png"
+LOGO_PATH = Path(__file__).parent / "logo.jpeg"   # mets ton logo ici, ex: "static/logo.png"
 
 left, right = st.columns([1, 0.12])  # ajuste le ratio pour coller le logo à droite
 with left:
