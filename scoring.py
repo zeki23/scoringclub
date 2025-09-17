@@ -19,7 +19,8 @@ st.caption("Entrez des tickers (ex: MSFT, AAPL, RI.PA) ou importez un CSV avec u
 with st.sidebar:
     st.header("Paramètres Scoring")
     sleep_sec = st.number_input("Pause (sec) entre tickers", min_value=0.0, max_value=10.0, value=0.0, step=0.5)
-    
+    debug = st.toggle("Mode DEBUG", value=False)
+
 
 # =============================
 # Fonctions utilitaires
@@ -301,9 +302,25 @@ def analyze_ticker(ticker: str, secteurs_hint: Dict[str, str], debug: bool = Fal
             "OUI" if (pd.notnull(trailing_pe) and pd.notnull(forward_pe) and forward_pe < trailing_pe) else "NON"
         )
 
+        
+
     except Exception as e:
         if debug:
             st.warning(f"Erreur pour {ticker}: {e}")
+
+        # Si aucune donnée trouvée
+    # ✅ À coller tout en bas de analyze_ticker, juste avant "return data"
+    metrics_keys = [
+        "Revenue N","EBITDA N","Net Income N","EPS N","FCFE N",
+        "ROE (%)","Current Ratio","Debt-to-Equity",
+        "Net Margin (%)","Operating Margin (%)","FCF Margin (%)",
+        "Trailing P/E","Forward P/E",
+    ]
+    if not any(data.get(k) is not None for k in metrics_keys):
+        st.error(f"Aucune donnée trouvée pour le ticker {ticker} : soit le ticker est faux, soit l'entreprise n'est pas cotée.")
+
+
+
     return data
 
 # =============================
@@ -350,7 +367,7 @@ if run:
     df_results = pd.DataFrame(results)
 
     st.subheader("Résultats")
-    st.dataframe(df_results, use_container_width=True)
+    st.dataframe(df_results, width="stretch")
 
     # Export Excel (en mémoire)
     output_name = "Scldm.xlsx" if len(tickers) > 1 else f"{tickers[0]}_analyse.xlsx"
